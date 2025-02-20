@@ -6,7 +6,7 @@
 /*   By: hpodratc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:26:12 by hpodratc          #+#    #+#             */
-/*   Updated: 2025/02/20 14:40:58 by hpodratc         ###   ########.fr       */
+/*   Updated: 2025/02/20 19:02:32 by hpodratc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	*ft_strjoin(char *s1, char const *s2);
 char	*ft_strchr(const char *s, int c);
 char	*extract_line(char **buff);
+char	*ft_strdup(const char *s);
 
 #endif

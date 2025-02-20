@@ -6,7 +6,7 @@
 /*   By: hpodratc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 14:26:03 by hpodratc          #+#    #+#             */
-/*   Updated: 2025/02/20 14:57:31 by hpodratc         ###   ########.fr       */
+/*   Updated: 2025/02/20 19:02:57 by hpodratc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!buff)
-		buff = malloc(1);
+		buff = ft_strdup("");
 	read_size = read(fd, str, BUFFER_SIZE);
 	while (read_size > 0)
 	{
@@ -31,7 +31,7 @@ char	*get_next_line(int fd)
 			break ;
 		read_size = read(fd, str, BUFFER_SIZE);
 	}
-	if (read_size == -1 || (read_size == 0 && !*buff))
+	if (read_size == -1 || (read_size == 0 || !*buff))
 	{
 		free(buff);
 		buff = NULL;
@@ -40,7 +40,7 @@ char	*get_next_line(int fd)
 	return (extract_line(&buff));
 }
 
-static char	*ft_strdup(const char *s)
+char	*ft_strdup(const char *s)
 {
 	size_t	len;
 	char	*dest;
