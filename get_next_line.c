@@ -6,42 +6,114 @@ char	*get_next_line(int fd)
     static char	str[BUFFER_SIZE + 1];
     ssize_t		read_size;
 
-	buff = malloc(1);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+
+	if (!buff)
+		buff = malloc(1);
 	while ((read_size = read(fd, str, BUFFER_SIZE)) > 0)
 	{
-		if (!ft_strchr(str, '\n'))
-			buff = ft_strjoin(buff, str);
-		else
-		{
-            buff = ft_strjoin(buff, ft_strchr(str, '\n'));
-            return (buff);
-		}
+		str[read_size] = '\0';
+		buff = ft_strjoin(buff, str);
+
+		if (ft_strchr(str, '\n'))
+			break;
 	}
-    str[read_size] = '\0';
-	return (buff);
+
+	if (read_size == -1 || (read_size == 0 && !*buff))
+	{
+		free(buff);
+		buff = NULL;
+		return (NULL);
+	}
+
+	return (extract_line(&buff));
 }
 
-int	main(void)
+char    *ft_strdup(const char *s)
 {
-	const char	*FILE;
-	int		fd;
-	char		*line;
+	size_t  len;
+	char    *dest;
 
-	FILE = "get_next_line.c";
-	fd = open(FILE, O_RDONLY);
-	if (fd < 0)
-		return (0);
-
-	line = get_next_line(fd);
-	write(1, line, ft_strlen(line));
-	free(line);
-
-    write(1, "\n", 1);
-
-	line = get_next_line(fd);
-	write(1, line, ft_strlen(line));
-    free(line);
-
-	close(fd);
-	return (0);
+	len = ft_strlen(s) + 1;
+	dest = (char *)malloc(len);
+	if (dest == NULL)
+		return (NULL);
+	ft_memcpy(dest, s, len);
+	return (dest);
 }
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	i;
+
+	if (!s)
+		return (NULL);
+	if (start > ft_strlen(s))
+		return (ft_strdup(""));
+	if (len > ft_strlen(s + start))
+		len = ft_strlen(s + start);
+	sub = (char *)malloc(len + 1);
+	if (!sub)
+		return (NULL);
+	i = 0;
+	while (i < len && s[start + i])
+	{
+		sub[i] = s[start + i];
+		++i;
+	}
+	sub[len] = '\0';
+	return (sub);
+}
+
+char *extract_line(char **buff)
+{
+	char *line;
+	char *new_buff;
+	int i = 0;
+
+	while ((*buff)[i] && (*buff)[i] != '\n')
+		i++;
+
+	line = ft_substr(*buff, 0, i + 1);
+	new_buff = ft_strdup(*buff + i + 1);
+
+	free(*buff);
+	*buff = new_buff;
+
+	return (line);
+}
+
+// int	main(void)
+// {
+// 	const char	*FILE;
+// 	int		fd;
+// 	char		*line;
+//
+// 	FILE = "get_next_line.c";
+// 	fd = open(FILE, O_RDONLY);
+// 	if (fd < 0)
+// 		return (0);
+//
+// 	line = get_next_line(fd);
+// 	while (line)
+// 	{
+// 		write(1, line, ft_strlen(line));
+// 		free(line);
+// 		line = get_next_line(fd);
+// 	}
+//
+// 	// write(1, "\n", 1);
+//  //
+// 	// line = get_next_line(fd);
+// 	// write(1, line, ft_strlen(line));
+//  //    free(line);
+//  //
+// 	// line = get_next_line(fd);
+// 	// write(1, line, ft_strlen(line));
+//     free(line);
+//
+// 	close(fd);
+// 	return (0);
+// }

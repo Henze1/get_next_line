@@ -19,5 +19,6 @@ size_t	ft_strlen(const char *str);
 void    *ft_memcpy(void *dest, const void *src, size_t n);
 char    *ft_strjoin(char *s1, char const *s2);
 char    *ft_strchr(const char *s, int c);
+char    *extract_line(char **buff);
 
 #endif
