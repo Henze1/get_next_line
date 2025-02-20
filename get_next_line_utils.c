@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hpodratc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 14:26:19 by hpodratc          #+#    #+#             */
+/*   Updated: 2025/02/20 14:51:20 by hpodratc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 size_t	ft_strlen(const char *str)
@@ -5,16 +17,16 @@ size_t	ft_strlen(const char *str)
 	size_t	len;
 
 	len = 0;
-	while(str[len])
+	while (str[len])
 		++len;
 	return (len);
 }
 
-void    *ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t  i;
-	char    *d;
-	char    *s;
+	size_t	i;
+	char	*d;
+	char	*s;
 
 	if (!dest && !src)
 		return (NULL);
@@ -29,11 +41,11 @@ void    *ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-char    *ft_strjoin(char *s1, char const *s2)
+char	*ft_strjoin(char *s1, char const *s2)
 {
-	size_t  s1len;
-	size_t  s2len;
-	char    *new_s;
+	size_t	s1len;
+	size_t	s2len;
+	char	*new_s;
 
 	if (!s1 || !s2)
 		return (NULL);
@@ -49,20 +61,20 @@ char    *ft_strjoin(char *s1, char const *s2)
 	return (new_s);
 }
 
-char    *ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
-        size_t  i;
-        char    ch;
+	size_t	i;
+	char	ch;
 
-        i = 0;
-        ch = (char) c;
-        while (s[i])
-        {
-                if (s[i] == ch)
-                        return ((char *)&s[i]);
-                ++i;
-        }
-        if (ch == '\0')
-                return ((char *)&s[i]);
-        return (NULL);
+	i = 0;
+	ch = (char) c;
+	while (s[i])
+	{
+		if (s[i] == ch)
+			return ((char *)&s[i]);
+		++i;
+	}
+	if (ch == '\0')
+		return ((char *)&s[i]);
+	return (NULL);
 }

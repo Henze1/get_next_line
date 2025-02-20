@@ -1,39 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hpodratc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 14:26:03 by hpodratc          #+#    #+#             */
+/*   Updated: 2025/02/20 14:57:31 by hpodratc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 char	*get_next_line(int fd)
 {
 	static char	*buff;
-    static char	str[BUFFER_SIZE + 1];
-    ssize_t		read_size;
+	static char	str[BUFFER_SIZE + 1];
+	ssize_t		read_size;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-
 	if (!buff)
 		buff = malloc(1);
-	while ((read_size = read(fd, str, BUFFER_SIZE)) > 0)
+	read_size = read(fd, str, BUFFER_SIZE);
+	while (read_size > 0)
 	{
 		str[read_size] = '\0';
 		buff = ft_strjoin(buff, str);
-
 		if (ft_strchr(str, '\n'))
-			break;
+			break ;
+		read_size = read(fd, str, BUFFER_SIZE);
 	}
-
 	if (read_size == -1 || (read_size == 0 && !*buff))
 	{
 		free(buff);
 		buff = NULL;
 		return (NULL);
 	}
-
 	return (extract_line(&buff));
 }
 
-char    *ft_strdup(const char *s)
+static char	*ft_strdup(const char *s)
 {
-	size_t  len;
-	char    *dest;
+	size_t	len;
+	char	*dest;
 
 	len = ft_strlen(s) + 1;
 	dest = (char *)malloc(len);
@@ -43,7 +53,7 @@ char    *ft_strdup(const char *s)
 	return (dest);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+static char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*sub;
 	size_t	i;
@@ -67,53 +77,50 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-char *extract_line(char **buff)
+char	*extract_line(char **buff)
 {
-	char *line;
-	char *new_buff;
-	int i = 0;
+	char	*line;
+	char	*new_buff;
+	int		i;
 
+	i = 0;
 	while ((*buff)[i] && (*buff)[i] != '\n')
 		i++;
-
 	line = ft_substr(*buff, 0, i + 1);
 	new_buff = ft_strdup(*buff + i + 1);
-
 	free(*buff);
 	*buff = new_buff;
-
 	return (line);
 }
+/*
+int	main(void)
+{
+	const char	*FILE;
+	int		fd;
+	char		*line;
 
-// int	main(void)
-// {
-// 	const char	*FILE;
-// 	int		fd;
-// 	char		*line;
-//
-// 	FILE = "get_next_line.c";
-// 	fd = open(FILE, O_RDONLY);
-// 	if (fd < 0)
-// 		return (0);
-//
-// 	line = get_next_line(fd);
-// 	while (line)
-// 	{
-// 		write(1, line, ft_strlen(line));
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-//
-// 	// write(1, "\n", 1);
-//  //
-// 	// line = get_next_line(fd);
-// 	// write(1, line, ft_strlen(line));
-//  //    free(line);
-//  //
-// 	// line = get_next_line(fd);
-// 	// write(1, line, ft_strlen(line));
-//     free(line);
-//
-// 	close(fd);
-// 	return (0);
-// }
+	FILE = "get_next_line.c";
+	fd = open(FILE, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	line = get_next_line(fd);
+	while (line)
+	{
+		write(1, line, ft_strlen(line));
+		free(line);
+		line = get_next_line(fd);
+	}
+
+	// write(1, "\n", 1);
+
+	// line = get_next_line(fd);
+ 	// write(1, line, ft_strlen(line));
+	//	  free(line);
+
+	// line = get_next_line(fd);
+	// write(1, line, ft_strlen(line));
+	free(line);
+
+	close(fd);
+	return (0);
+}*/
