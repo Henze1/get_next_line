@@ -31,7 +31,7 @@ char	*get_next_line(int fd)
 			break ;
 		read_size = read(fd, str, BUFFER_SIZE);
 	}
-	if (read_size == -1 || (read_size == 0 || !*buff))
+	if (read_size == -1 || (read_size == 0 && (!buff || buff[0] == '\0')))
 	{
 		free(buff);
 		buff = NULL;
@@ -86,8 +86,14 @@ char	*extract_line(char **buff)
 	i = 0;
 	while ((*buff)[i] && (*buff)[i] != '\n')
 		i++;
-	line = ft_substr(*buff, 0, i + 1);
-	new_buff = ft_strdup(*buff + i + 1);
+	if ((*buff)[i] == '\n')
+		line = ft_substr(*buff, 0, i + 1);
+	else
+		line = ft_strdup(*buff);
+	if ((*buff)[i] == '\n')
+		new_buff = ft_strdup(*buff + i + 1);
+	else
+		new_buff = NULL;
 	free(*buff);
 	*buff = new_buff;
 	return (line);
@@ -99,7 +105,7 @@ int	main(void)
 	int		fd;
 	char		*line;
 
-	FILE = "get_next_line.c";
+	FILE = "1char.txt";
 	fd = open(FILE, O_RDONLY);
 	if (fd < 0)
 		return (0);
